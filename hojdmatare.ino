@@ -36,6 +36,15 @@ void setup() {
   //start communications
   Serial.begin(115200);
 
+  //checks if sensor is connected and initiates it
+   Serial.print("Probe BMP280: ");
+    if (bmp280.initialize()) Serial.println("Sensor found");
+    else
+    {
+        Serial.println("Sensor missing");
+        while (1) {}
+    }
+
   pinMode(buttonPin, INPUT);
 
   //settings
@@ -95,7 +104,7 @@ float measPres() {
   bmp280.getPressure(pascal);
   bmp280.triggerMeasurement();
 
-  //takes the mean of the 10 latest values
+  //takes the mean of the 15 latest values
   buffer[idx] = pascal / 100;
   idx = (idx + 1) % len;
 
